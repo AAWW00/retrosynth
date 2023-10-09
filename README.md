@@ -5,8 +5,8 @@ A small music editor sequencer in the style of skeomorphism, inspired by the Ten
 
 This synthesizer will allow you to generate a melody by drawing on a matrix using dots
 ## Screenshots
-![](https://aawwoo.ooo/synth/RSA1.png)
-![](https://aawwoo.ooo/synth/RSA2.png)
+![](https://github.com/AAWW00/retrosynth/blob/main/%20RSA1.png) 
+![](https://github.com/AAWW00/retrosynth/blob/main/%20RSA2.png)
 ## Installation
 
 This application only requires a domain, an SSL certificate, hosting and a MiniApp created in Telegram.
