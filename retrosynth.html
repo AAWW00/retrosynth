@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+	<!-- styles -->
+	<style type="text/css">
+body {
+background-color: #111;
+user-select: none;
+}
+
+/*TENORI-ON*/
+
+#tenorion {
+display: flex;
+flex-direction: column;
+align-items: center;
+height: auto;
+weight: auto;
+margin: 1vw;
+user-select: none;      
+display: grid;
+grid-template-columns: repeat(16, 6%);
+gap: 0.2vw ;
+}
+
+.cell {
+width: 5vw;
+height: 5vw;
+background-color: #1a1a1a;
+border-radius: 5vw;
+border: 0.5vw solid #cccccc;
+box-shadow: 0 0 2vw 0.01vw #333, 0.5vw #0d0d0d inset;
+ }
+
+.cell.active {
+background-color: #ffffff;
+border: 0.5vw solid white;
+box-shadow: 0px 0px 4px 1px white inset;
+box-shadow: 0px 0px 4px 1px white;
+}
+
+.cell.playing {
+background-color: #ff3333;
+border: 0.5vw solid #ff5555;
+box-shadow: 0px 0px 4px 5px #ff6666 inset;
+box-shadow: 0px 0px 4px 1px #ff0000;
+}
+
+/*SLIDER AND BUTTON*/
+
+.maxed {color: white;
+font-family: monospace;
+font-size: 3vw;
+background-color: rgba(0, 0, 0, 0.1);
+padding: 1vw;
+border-radius: 1vw;
+/*border: 0.5vw ;
+border-style: solid;
+box-shadow: 0 0 2vw 0.01vw #444; */
+text-shadow: 0vw 0vw 2vw rgba(255,255,255,0.0);
+margin: 0 auto;
+}
+
+.button {
+color: #cccccc;
+font-family: monospace;
+font-size: 3vw;
+background-color: rgba(0, 0, 0, 0.7);
+padding: 2vw;
+border-radius: 4vw;
+border: 0.5vw solid #cccccc;
+box-shadow: 0 0 2vw 0.01vw #333;
+text-shadow: 0vw 0vw 2vw rgba(255,255,255,0.5);
+margin: 3vw auto;
+}
+
+/*monocrome display*/
+
+.buttondisplay {
+color: #226600;
+font-family: monospace;
+font-size: 5vw;
+background-color: #99ff66;
+padding: 1vw;
+border-radius: 1vw;
+border: 0vw solid #0d0d0d;
+box-shadow: 0 0 2vw 0.01vw #333, 0vw 0vw 1vw 1vw rgba(0,0,0,0.5) inset;
+text-shadow: 0vw 0vw 1vw rgba(0,0,0,0.5);
+margin: 3vw auto;
+width: 100%;
+}
+
+.larger {
+object-size: 50px;
+}
+
+/*это база*/
+input[type="range"] {
+-webkit-appearance: none;
+appearance: none;
+background: transparent;
+cursor: pointer;
+width: 100%;
+}
+
+/*FOCUS*/
+input[type="range"]:focus {
+outline: none;
+}
+
+/*CHROME, SAFARI, OPERA, EDGE, CHROMIUM STYLES*/
+/*slider track*/
+input[type="range"]::-webkit-slider-runnable-track {
+background-color: #0a0a0a;
+border-radius: 2vw;
+height: 2vw;
+border: 0.5vw ;
+border-style: solid;
+box-shadow: 0 0 2vw 0.01vw #333;
+}
+
+/*slider thumb*/
+input[type="range"]::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+margin-top: -20px;
+background-color: #cccccc;
+border-radius: 2vw;
+height: 6vw;
+width: 3vw;
+border: 0.5vw solid #cccccc;
+box-shadow: 0 0 2vw 0.2vw #000;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+outline: 3px solid #f6f5f4;
+outline-offset: 0.4vw;
+}
+
+/* FIREFOX STYLES*/
+
+/*slider track*/
+input[type="range"]::-moz-range-track {
+background-color: #0a0a0a;
+border-radius: 2vw;
+height: 2vw;
+border: 0.5vw solid #cccccc;
+box-shadow: 0 0 2vw 0.01vw #333;
+}
+
+/*slider thumb*/
+input[type="range"]::-moz-range-thumb {
+background-color: #fafafa;
+border: none;
+border-radius: 2vw;
+height: 6vw;
+width: 3vw;
+border: 0.5vw solid #cccccc;
+box-shadow: 0 0 2vw 0.2vw #000;
+}
+
+input[type="range"]:focus::-moz-range-thumb{
+outline: 3px solid #f6f5f4;
+outline-offset: 0.4vw;
+}
+
+
+	</style>
+
+<body>
+	<!-- switch wave type -->
+<button id="waveTypeButton" class="buttondisplay">Change Wave Type</button>
+
+<div class="maxed">
+	<label for="attack">Attack:</label>
+	<input type="range" id="attack" min="0" max="1" step="0.01" value="0.1" class="largen">
+</div>
+
+<div class="maxed">
+	<label for="release">Release:</label>
+	<input type="range" id="release" min="0" max="2" step="0.01" value="0.5">
+</div>
+
+<div class="maxed">
+	<label for="volume">Volume:</label>
+	<input type="range" id="volume" min="-20" max="0" step="1" value="-50">
+</div>
+
+<div class="maxed">
+	<label for="echo">Echo:</label>
+	<input type="range" id="echo" min="0" max="0.5" step="0.01" value="0.0">
+</div>
+
+<div class="maxed">
+	<label for="reverb">Reverb:</label>
+	<input type="range" id="reverb" min="0" max="0.5" step="0.01" value="0.0">
+</div>
+
+<div class="maxed">
+	<label for="tempo">Tempo (BPM):</label>
+	<input type="range" id="tempo" min="20" max="100" step="1" value="60">
+</div>
+
+<div>
+  <button onclick="startTransport()" class="button">Start</button>
+  <button onclick="stopTransport()" class="button">Stop</button>
+  <button onclick="clearCells()" class="button">Clear Cells</button>
+  <button onclick="randomizeCells()" class="button">Randomize Cells</button>
+</div>
+
+<div id="tenorion"></div>
+
+<div id="step-indicator">
+<div id="current-step"></div>
+</div>
+
+<script type="text/javascript">
+
+//initializing the cell grid
+
+const numRows = 16;
+const numCols = 16;
+const noteValues = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6']; //YOUR NOTES!
+const synths = noteValues.map(() => {
+const synth = new Tone.Synth().toDestination();
+synth.oscillator.type = 'sine';
+return synth;
+});
+
+const sequence = Array.from({ length: numRows }, () => Array(numCols).fill(false));
+
+const cells = [];
+
+for (let i = 0; i < numRows; i++) {
+	const row = document.createElement('div');
+	row.className = 'row';
+
+	for (let j = 0; j < numCols; j++) {
+	const cell = document.createElement('div');
+	cell.className = 'cell';
+	cell.addEventListener('click', toggleCell.bind(null, i, j));
+	row.appendChild(cell);
+	cells.push(cell);
+	}
+
+	document.getElementById('tenorion').appendChild(row);
+}
+
+//control of synthesizer parameters and effects
+
+let waveIndex = 0;
+const waveTypes = ['sine', 'triangle', 'sawtooth', 'square']; 
+
+const waveTypeButton = document.getElementById('waveTypeButton');
+waveTypeButton.addEventListener('click', () => {
+	waveIndex = (waveIndex + 1) % waveTypes.length;
+	waveTypeButton.textContent = `Wave Type: ${waveTypes[waveIndex]}`;
+	updateSynthSettings();
+	});
+
+const attackSlider = document.getElementById('attack');
+const releaseSlider = document.getElementById('release');
+const volumeSlider = document.getElementById('volume');
+const echoSlider = document.getElementById('echo');
+const reverbSlider = document.getElementById('reverb');
+const tempoSlider = document.getElementById('tempo');
+
+attackSlider.addEventListener('input', updateSynthSettings);
+releaseSlider.addEventListener('input', updateSynthSettings);
+volumeSlider.addEventListener('input', updateSynthSettings);
+echoSlider.addEventListener('input', updateEffectSettings);
+reverbSlider.addEventListener('input', updateEffectSettings);
+tempoSlider.addEventListener('input', updateTempo);
+
+//music playback control
+
+let transport;
+let notes;
+
+function toggleTransport() {
+	if (!transport || !transport.state === 'started') {
+	startTransport();
+	} else {
+	stopTransport();
+	}
+}
+
+function startTransport() {
+	Tone.start().then(() => {
+	transport = Tone.Transport;
+	transport.bpm.value = parseFloat(tempoSlider.value);
+	notes = new Tone.Sequence((time, col) => {
+	cells.forEach((cell) => cell.classList.remove('playing'));
+
+		for (let row = 0; row < numRows; row++) {
+			if (sequence[row][col]) {
+			const synth = synths[row];
+			const note = noteValues[row];
+			synth.triggerAttackRelease(note, '16n', time);
+			const cell = cells[row * numCols + col];
+			cell.classList.add('playing');
+			}
+		}
+          updateStepIndicator(col);
+	}, Array.from({ length: numCols }, (_, i) => i), '16n');
+	transport.start();
+	notes.start();
+	});
+}
+
+function stopTransport() {
+	if (transport) {
+		transport.stop();
+		resetStepIndicator();
+	}
+}
+
+function updateTempo() {
+	if (transport) {
+		transport.bpm.value = parseFloat(tempoSlider.value);
+	}
+}
+
+function toggleCell(row, col) {
+	const cell = cells[row * numCols + col];
+	sequence[row][col] = !sequence[row][col];
+	cell.classList.toggle('active', sequence[row][col]);
+}
+
+//updating synth and effects parameters
+
+function updateSynthSettings() {
+	const attack = parseFloat(attackSlider.value);
+	const release = parseFloat(releaseSlider.value);
+	const volume = parseFloat(volumeSlider.value) - 40;
+	const waveType = waveTypes[waveIndex];
+
+	synths.forEach((synth) => {
+		synth.envelope.attack = attack;
+		synth.envelope.release = release;
+		synth.volume.value = volume;
+		synth.oscillator.type = waveType;
+	});
+}
+
+let echo, reverb;
+
+function updateEffectSettings() {
+	const echoValue = parseFloat(echoSlider.value);
+	const reverbValue = parseFloat(reverbSlider.value);
+
+		if (echo) {
+			echo.dispose();
+		}
+		if (reverb) {
+			reverb.dispose();
+		}
+
+	echo = new Tone.FeedbackDelay('16n', echoValue);
+	reverb = new Tone.JCReverb(reverbValue);
+	Tone.start();
+
+	synths.forEach((synth) => {
+		synth.disconnect();
+		synth.chain(echo, reverb, Tone.Destination);
+	});
+}
+
+//clear and random cells
+
+function clearCells() {
+	for (let i = 0; i < numRows; i++) {
+		for (let j = 0; j < numCols; j++) {
+			const cell = cells[i * numCols + j];
+			sequence[i][j] = false;
+			cell.classList.remove('active');
+		}
+	}
+}
+
+function randomizeCells() {
+	clearCells();
+	const probability = 0.1; //cell filling area
+	for (let i = 0; i < numRows; i++) {
+		for (let j = 0; j < numCols; j++) {
+			const cell = cells[i * numCols + j];
+			sequence[i][j] = Math.random() < probability;
+			cell.classList.toggle('active', sequence[i][j]);
+		}
+	}
+}
+
+const stepIndicator = document.getElementById('current-step');
+const stepWidth = (100 / numCols);
+
+function updateStepIndicator(step) {
+	const stepPosition = step * stepWidth;
+	stepIndicator.style.width = `${stepPosition}%`;
+}
+
+function resetStepIndicator() {
+	stepIndicator.style.width = '0';
+}
+</script>
+</body>
+</html>
