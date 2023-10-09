@@ -5,8 +5,8 @@
 
 Данный синтезатор позволит вам сгенерировать мелодию посредством рисования на матрице при помощи точек
 ## Скриншоты
-![](https://aawwoo.ooo/synth/RSA1.png)
-![](https://aawwoo.ooo/synth/RSA2.png)
+![](https://github.com/AAWW00/retrosynth/blob/main/%20RSA1.png) 
+![](https://github.com/AAWW00/retrosynth/blob/main/%20RSA2.png)
 ## Установка
 
 Данному приложение требуется только домен, SSL сертификат, хостинг и созданный MiniApp в Telegram.
