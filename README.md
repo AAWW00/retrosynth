@@ -36,7 +36,7 @@ The application code is licensed under the GNU GPL.
 
 ## TO DO
 - Drum column
-- Sampler with import of your own samples
+- Sampler with import of your own samples `Soon`
 - Modular synthesizer with channel controller
 - Save and Export track
 - Tracker with support for multiple patterns
